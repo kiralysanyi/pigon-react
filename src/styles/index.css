@@ -1,0 +1,24 @@
+:root {
+    --primary-color: rgb(172, 255, 172);
+    --primary-text-color: black;
+    --primary-hover: rgb(149, 255, 149);
+    --secondary-hover: rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: rgb(0, 145, 0);
+        --primary-text-color: white;
+        --primary-hover: rgb(0, 160, 0);
+        --secondary-hover: rgba(255, 255, 255, 0.15);
+    }
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url("../Assets/background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}

@@ -1,0 +1,80 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-width: 80%;
+    max-height: 80%;
+    min-width: 300px;
+    min-height: 300px;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    color: black;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+}
+
+.form-group {
+    margin: 10px;
+}
+
+label {
+    display: flex;
+}
+
+input[type=text], input[type=password] {
+    height: 1.5rem;
+    width: 300px;
+    max-width: 80vw;
+}
+
+input[type=button] {
+    font-size: 1rem;
+    display: block;
+    margin: 10px;
+    height: 2rem;
+    min-width: 10rem;
+    color: var(--primary-text-color);
+    background-color: var(--primary-color);
+    outline: 0;
+    border: none;
+    border-radius: 0.5rem;
+    transition: 200ms;
+}
+
+input[type=button]:hover {
+    background-color: var(--primary-hover);
+}
+
+input:focus {
+    outline: 2px solid rgb(255, 187, 0);
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.secondary-btn {
+    background-color: transparent !important;
+    color: var(--primary-text-color) !important;
+}
+
+.secondary-btn:hover {
+    background-color: var(--secondary-hover) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    form {
+        background-color: rgba(0, 0, 0, 0.4);
+        color: white;
+    }
+}
