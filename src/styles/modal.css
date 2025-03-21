@@ -1,4 +1,4 @@
-.dialog-container {
+.modal-container {
     display: block;
     position: fixed;
     top: 0px;
@@ -6,10 +6,10 @@
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(16px);
 }
 
-.alert-dialog {
+.modal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -23,14 +23,32 @@
     border-radius: 16px;
     transform: translate(-50%, -50%);
     padding: 30px;
+    height: auto;
+    transition: 200ms;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 2rem;
+    height: 2rem;
+    padding: 1rem;
+}
+
+.modal-search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
 }
 
 @media (prefers-color-scheme: dark) {
-    .dialog-container {
+    .modal-container {
         background-color: rgba(0, 0, 0, 0.4);
     }
 
-    .alert-dialog {
+    .modal {
         background-color: rgb(39, 39, 39);
         color: white;
     }

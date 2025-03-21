@@ -2,15 +2,29 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import "./styles/form.css"
 import Alert from "./components/Alert";
+import { register } from "./utils/auth";
+let alertTitle = "";
+let alertContent = "";
 
 function Register() {
     document.title = "Pigon - Register"
     const [alertShown, setAlertShown] = useState(false)
     let navigate = useNavigate();
 
+    const [password, setPassword] = useState("")
+    const [password2, setPassword2] = useState("")
+    const [username, setUsername] = useState("")
+
 
     const regHandler = () => {
-
+        if (password !== password2) {
+            alertTitle = "Password mismatch"
+            alertContent = "The two passwords are not the same, please check again."
+            setAlertShown(true);
+            return;
+        } else {
+            //continue with registration
+        }
     }
 
     return <>
@@ -18,17 +32,17 @@ function Register() {
             <h1>Pigon Register</h1>
             <div className="form-group">
                 <label htmlFor="username">Username</label>
-                <input type="text" name="username" id="username" />
+                <input type="text" name="username" id="username" value={username} onChange={(e) =>  {setUsername(e.target.value)}} />
             </div>
 
             <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" />
+                <input type="password" name="password" id="password" value={password} onChange={(e) => {setPassword(e.target.value)}} />
             </div>
 
             <div className="form-group">
                 <label htmlFor="password2">Confirm password</label>
-                <input type="password" name="password2" id="password2" />
+                <input type="password" name="password2" id="password2" value={password2} onChange={(e) => {setPassword2(e.target.value)}} />
             </div>
 
 
