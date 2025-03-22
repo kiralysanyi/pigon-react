@@ -26,7 +26,6 @@
 #message {
     flex-grow: 1;
     height: 1.5rem;
-    margin-left: 1rem;
     color: black;
     background-color: transparent;
     outline: 0;
@@ -37,7 +36,7 @@
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-#sendIcon {
+.sendIcon {
     padding: 0.5rem;
     width: 1.5rem;
     height: 1.5rem;
@@ -52,6 +51,19 @@
     backdrop-filter: blur(16px);
     background-color: rgba(255, 255, 255, 0.8);
     color: black;
+}
+
+.chat-content {
+    position: absolute;
+    top: 0rem;
+    left: 0px;
+    width: 100%;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    height: calc(100% - 8rem);
+    background-color: rgba(255, 255, 255, 0.4);
+    color: black;
+    z-index: -1;
 }
 
 .chat {
@@ -70,6 +82,11 @@
 
     .chat-header {
         background-color: rgba(36, 36, 36, 0.8);
+        color: white;
+    }
+
+    .chat-content {
+        background-color: rgba(36, 36, 36, 0.4);
         color: white;
     }
 

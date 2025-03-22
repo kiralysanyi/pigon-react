@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sidebar, SidebarGroup, SidebarItem, Spacer } from "./components/Sidebar";
-import { CgAdd, CgLaptop, CgLogOut } from "react-icons/cg"
+import { CgAdd, CgImage, CgLaptop, CgLogOut } from "react-icons/cg"
 import NewChatModal from "./components/NewChatModal";
 import { checkIfLoggedIn, getUserInfo, logout } from "./utils/auth";
 import { useNavigate } from "react-router";
@@ -64,14 +64,18 @@ function App() {
 
     const sendMessageHandler = (e) => {
         e.preventDefault();
-        console.log(message)
-        setMessage("");
+
+        if (message.trim() != "") {
+            setMessage("");
+            console.log(message)
+        }
     }
 
     return <>
         <Sidebar>
             <SidebarGroup>
                 <h1>Pigon</h1>
+                <span>Logged in as: {userInfo.username}</span>
             </SidebarGroup>
             <Spacer />
             <SidebarGroup style={{ flexGrow: 1, gap: "1rem", overflow: "auto" }}>
@@ -94,14 +98,19 @@ function App() {
             </SidebarGroup>
         </Sidebar>
         <div className="chat">
-            <div className="chat-header">
-                {selectedChat ? <User style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} /> : ""}
-            </div>
+            {selectedChat ?
+                <div className="chat-header">
+                    <User style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} />
+                </div> : ""}
             <div className="chat-content"></div>
             {selectedChat ? <div className="chat-messagebox">
                 <form onSubmit={sendMessageHandler} autoComplete="off">
+                    <CgImage className="sendIcon" />
                     <input type="text" name="message" id="message" value={message} onChange={(e) => { setMessage(e.target.value) }} placeholder="Message" />
-                    <RiSendPlane2Fill id="sendIcon" />
+                    <input type="submit" id="sendmsg" style={{ display: "none" }}></input>
+                    <label htmlFor="sendmsg">
+                        <RiSendPlane2Fill className="sendIcon" />
+                    </label>
                 </form>
             </div> : ""}
         </div>
