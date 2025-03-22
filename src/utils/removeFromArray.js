@@ -6,7 +6,6 @@
  */
 function removeFromArray(array, value) {
     const newArray = array.filter(item => item !== value);
-    console.log(newArray, value)
     return newArray
 }
 

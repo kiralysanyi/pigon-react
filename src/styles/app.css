@@ -1,0 +1,83 @@
+.chat-messagebox {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 3rem;
+    backdrop-filter: blur(16px);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+.chat-messagebox form {
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-items: left;
+    align-items: center;
+    align-content: center;
+    justify-content: left;
+}
+
+#message {
+    flex-grow: 1;
+    height: 1.5rem;
+    margin-left: 1rem;
+    color: black;
+    background-color: transparent;
+    outline: 0;
+    border: none;
+}
+
+#message:focus {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+#sendIcon {
+    padding: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.chat-header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 5rem;
+    backdrop-filter: blur(16px);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+.chat {
+    position: absolute;
+    top: 0px;
+    left: 320px;
+    width: calc(100% - 320px);
+    height: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+    .chat-messagebox {
+        background-color: rgba(36, 36, 36, 0.8);
+        color: white;
+    }
+
+    .chat-header {
+        background-color: rgba(36, 36, 36, 0.8);
+        color: white;
+    }
+
+    #message {
+        color: white;
+    }
+
+    #message:focus {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+}

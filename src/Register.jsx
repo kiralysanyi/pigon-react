@@ -24,11 +24,26 @@ function Register() {
             return;
         } else {
             //continue with registration
+            register(username, password).then((response) => {
+                console.log(response)
+                if (response.success == true) {
+                    alertContent = "Registered account successfully, you will be redirected to login page shortly"
+                    alertTitle = "Info"
+                    setAlertShown(true)
+                    setTimeout(() => {
+                        navigate("/login")
+                    }, 1000);
+                } else {
+                    alertTitle = "Error";
+                    alertContent = response.data.message;
+                    setAlertShown(true)
+                }
+            })
         }
     }
 
     return <>
-        <form>
+        <form className="form">
             <h1>Pigon Register</h1>
             <div className="form-group">
                 <label htmlFor="username">Username</label>

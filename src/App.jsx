@@ -7,22 +7,33 @@ import { useNavigate } from "react-router";
 import { addPrivateChat, getChats } from "./utils/chat/chat";
 import User from "./components/User";
 import removeFromArray from "./utils/removeFromArray";
+import { RiSendPlane2Fill } from "react-icons/ri";
+import "./styles/app.css"
 
 const userInfo = (await getUserInfo())["data"];
+let checkedLogin = false;
 
 function App() {
     const navigate = useNavigate();
-    checkIfLoggedIn().then((isLoggedIn) => {
-        if (!isLoggedIn) {
-            navigate("/login")
-        }
-    })
+    if (!checkedLogin) {
+        checkIfLoggedIn().then((isLoggedIn) => {
+            if (!isLoggedIn) {
+                navigate("/login")
+            } else {
+                checkedLogin = true;
+            }
+        })
+    }
+
+
 
     document.title = "Pigon"
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [chatList, setChatList] = useState(null);
+    const [message, setMessage] = useState("");
+    const [selectedChat, setSelectedChat] = useState(null)
 
-    if (chatList == null) {
+    const updateChatList = () => {
         getChats().then((response) => {
             if (response.success) {
                 setChatList(response.data);
@@ -33,11 +44,15 @@ function App() {
         })
     }
 
+    if (chatList == null) {
+        updateChatList();
+    }
+
     const handleCreateChat = (data) => {
         setShowNewChatModal(false);
         console.log(data);
-        addPrivateChat(data.id).then((result) => {
-            console.log(result)
+        addPrivateChat(data.id).then(() => {
+            updateChatList();
         })
     }
 
@@ -47,17 +62,23 @@ function App() {
         })
     }
 
+    const sendMessageHandler = (e) => {
+        e.preventDefault();
+        console.log(message)
+        setMessage("");
+    }
+
     return <>
         <Sidebar>
             <SidebarGroup>
                 <h1>Pigon</h1>
             </SidebarGroup>
             <Spacer />
-            <SidebarGroup style={{ flexGrow: 1 }}>
+            <SidebarGroup style={{ flexGrow: 1, gap: "1rem", overflow: "auto" }}>
                 {/* Chat list */}
                 <h1>Chats</h1>
                 <input style={{ width: "auto" }} type="text" placeholder="Search chats" />
-                {chatList? chatList.map(chat => <User key={chat.id} username={chat.name} id={removeFromArray(chat.participants, userInfo.id)[0]}/>): ""}
+                {chatList ? chatList.map(chat => <User onClick={() => { setSelectedChat(chat); setMessage("") }} key={chat.id} username={chat.name} id={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
             </SidebarGroup>
             <Spacer />
             <SidebarGroup className="sidebar-bottom horizontal">
@@ -73,9 +94,16 @@ function App() {
             </SidebarGroup>
         </Sidebar>
         <div className="chat">
-            <div className="chat-header"></div>
+            <div className="chat-header">
+                {selectedChat ? <User style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} /> : ""}
+            </div>
             <div className="chat-content"></div>
-            <div className="chat-messagebox"></div>
+            {selectedChat ? <div className="chat-messagebox">
+                <form onSubmit={sendMessageHandler} autoComplete="off">
+                    <input type="text" name="message" id="message" value={message} onChange={(e) => { setMessage(e.target.value) }} placeholder="Message" />
+                    <RiSendPlane2Fill id="sendIcon" />
+                </form>
+            </div> : ""}
         </div>
 
         {showNewChatModal ? <NewChatModal onResult={handleCreateChat} onClose={() => { setShowNewChatModal(false) }} /> : ""}

@@ -29,7 +29,7 @@ async function register(username, password) {
     } else {
         console.error('Registration failed', data.data.message);
     }
-    return data.data;
+    return data;
 }
 
 async function deleteAccount(username, password) {

@@ -29,7 +29,7 @@ function Login() {
     }
 
     return <>
-        <form>
+        <form className="form">
             <h1>Pigon Login</h1>
             <div className="form-group">
                 <label htmlFor="username">Username</label>
