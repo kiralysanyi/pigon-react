@@ -115,6 +115,17 @@
     color: rgba(0, 0, 0, 0.35);
 }
 
+@media screen and (max-width: 1300px) {
+    .msg-self {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+    }
+}
+
+.msg-date {
+    color: rgba(0, 0, 0, 0.35);
+}
+
 @media (prefers-color-scheme: dark) {
     .chat-messagebox {
         background-color: rgba(36, 36, 36, 0.8);
@@ -145,6 +156,10 @@
     }
 
     .msg-username {
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    .msg-date {
         color: rgba(255, 255, 255, 0.35);
     }
 }

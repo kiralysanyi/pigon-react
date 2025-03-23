@@ -123,7 +123,7 @@ function App() {
                 {/* Chat list */}
                 <h1>Chats</h1>
                 <input style={{ width: "auto" }} type="text" placeholder="Search chats" />
-                {chatList ? chatList.map(chat => <User className={`sidebar-user ${selectedChat? (selectedChat.chatid == chat.chatid? "focused": ""): ""}`} onClick={() => { selectChatHandler(chat) }} key={chat.id} username={chat.name} id={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
+                {chatList ? chatList.map(chat => <User className={`sidebar-user ${selectedChat ? (selectedChat.chatid == chat.chatid ? "focused" : "") : ""}`} onClick={() => { selectChatHandler(chat) }} key={chat.id} username={chat.name} id={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
             </SidebarGroup>
             <Spacer />
             <SidebarGroup className="sidebar-bottom horizontal">
@@ -145,11 +145,11 @@ function App() {
                 </div> : ""}
             <div className="chat-content">
                 {
-                messages? messages.map((message) => <Message senderId={message.senderid} senderName={message.username} type={JSON.parse(message.message).type} content={JSON.parse(message.message).content} />): ""}
+                    messages ? messages.map((message) => <Message date={message.date} senderId={message.senderid} senderName={message.username} type={JSON.parse(message.message).type} content={JSON.parse(message.message).content} />) : ""}
             </div>
             {selectedChat ? <div className="chat-messagebox">
                 <form onSubmit={sendMessageHandler} autoComplete="off">
-                    <CgImage className="sendIcon" onClick={() => {selectAndSend(selectedChat.chatid)}} />
+                    <CgImage className="sendIcon" onClick={() => { selectAndSend(selectedChat.chatid) }} />
                     <input type="text" name="message" id="message" value={message} onChange={(e) => { setMessage(e.target.value) }} placeholder="Message" />
                     <input type="submit" id="sendmsg" style={{ display: "none" }}></input>
                     <label htmlFor="sendmsg">
