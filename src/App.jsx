@@ -11,9 +11,12 @@ import { RiSendPlane2Fill } from "react-icons/ri";
 import "./styles/app.css"
 import Message from "./components/Message";
 import socket from "./utils/chat/socket";
+import MediaViewer from "./components/MediaViewer";
+import { BASEURL } from "./config";
 
 const userInfo = (await getUserInfo())["data"];
 let checkedLogin = false;
+let mediaSource, mediaType = null;
 
 function App() {
     const navigate = useNavigate();
@@ -35,6 +38,7 @@ function App() {
     const [message, setMessage] = useState("");
     const [selectedChat, setSelectedChat] = useState(null)
     const [messages, setMessages] = useState(null);
+    const [showMediaViewer, setShowMediaViewer] = useState(false);
 
     //handling incoming messages
     const msgHandler = (data) => {
@@ -145,7 +149,21 @@ function App() {
                 </div> : ""}
             <div className="chat-content">
                 {
-                    messages ? messages.map((message) => <Message date={message.date} senderId={message.senderid} senderName={message.username} type={JSON.parse(message.message).type} content={JSON.parse(message.message).content} />) : ""}
+                    messages ? messages.map((message) => <Message
+                        onClick={() => {
+                            let msg = JSON.parse(message.message);
+                            if (msg.type == "image" || msg.type == "video") {
+                                mediaSource = BASEURL + msg.content
+                                mediaType = msg.type;
+                                setShowMediaViewer(true);
+                            }
+                        }}
+                        date={message.date}
+                        senderId={message.senderid}
+                        senderName={message.username}
+                        type={JSON.parse(message.message).type}
+                        content={JSON.parse(message.message).content}
+                    />) : ""}
             </div>
             {selectedChat ? <div className="chat-messagebox">
                 <form onSubmit={sendMessageHandler} autoComplete="off">
@@ -160,6 +178,8 @@ function App() {
         </div>
 
         {showNewChatModal ? <NewChatModal onResult={handleCreateChat} onClose={() => { setShowNewChatModal(false) }} /> : ""}
+
+        {showMediaViewer ? <MediaViewer type={mediaType} url={mediaSource} onClose={() => { setShowMediaViewer(false) }} /> : ""}
     </>
 }
 
