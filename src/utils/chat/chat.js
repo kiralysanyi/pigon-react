@@ -4,13 +4,6 @@ import socket from "./socket";
 
 let userinfo = (await getUserInfo()).data;
 
-socket.on("error", (err) => {
-    console.error("Socket:", err);
-})
-
-socket.on("message", (data) => {
-    console.log("MSG", data)
-})
 
 
 function createchat({ isGroupChat, chatName, participants }) {
@@ -56,7 +49,7 @@ function addPrivateChat(userid) {
             chatName: "",
             participants: [userinfo.id, userid]
         }
-    
+
         console.log(data);
         createchat(data).then(() => {
             //successfully created chat
@@ -156,6 +149,31 @@ function createGroupChat(chatName, participants) {
     });
 }
 
+/**
+ * 
+ * @param {number} chatid ID of the chat
+ * @param {number} page Page number default = 1
+ */
+async function getMessages(chatid, page = 1) {
+    return new Promise((resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/chat/messages?chatid=" + chatid + "?page=" + page, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(async (result) => {
+            resolved(await result.json())
+        }).catch((err) => {
+            rejected({
+                success: false,
+                message: err
+            })
+        })
+    });
+
+}
+
 async function getChats() {
     let response = await fetch(BASEURL + "/api/v1/chat/chats", {
         method: "GET",
@@ -173,4 +191,29 @@ async function getChats() {
     }
 }
 
-export {addPrivateChat, sendFile, sendMessage, searchUsers, createGroupChat, getChats}
+async function selectAndSend(chatid) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/jpg, image/jpeg, image/png, video/mp4, video/webm";
+    fileInput.addEventListener("change", (event) => {
+        let type = null;
+        if (fileInput.files[0].type.includes("video")) {
+            type = "video";
+        }
+
+        if (fileInput.files[0].type.includes("image")) {
+            type = "image"
+        }
+
+        if (type == null) {
+            console.error("Unknown filetype");
+            window.alert("Unknown filetype");
+            return;
+        }
+
+        sendFile(fileInput.files[0], type, chatid);
+    });
+    fileInput.click();
+}
+
+export { addPrivateChat, sendFile, sendMessage, searchUsers, createGroupChat, getChats, getMessages, selectAndSend }

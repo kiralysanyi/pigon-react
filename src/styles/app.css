@@ -51,6 +51,7 @@
     backdrop-filter: blur(16px);
     background-color: rgba(255, 255, 255, 0.8);
     color: black;
+    z-index: 1;
 }
 
 .chat-content {
@@ -58,12 +59,19 @@
     top: 0rem;
     left: 0px;
     width: 100%;
-    padding-top: 5rem;
-    padding-bottom: 3rem;
-    height: calc(100% - 8rem);
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+    height: calc(100% - 10rem);
     background-color: rgba(255, 255, 255, 0.4);
     color: black;
-    z-index: -1;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: end;
+    justify-items: end;
+    align-items: start;
+    align-content: start;
+    gap: 1rem;
+    overflow-y: auto;
 }
 
 .chat {
@@ -72,6 +80,39 @@
     left: 320px;
     width: calc(100% - 320px);
     height: 100%;
+}
+
+.msg {
+    width: auto;
+    height: auto;
+    display: flex;
+
+}
+
+.msg-content {
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    gap: 1rem;
+}
+
+.msg .pfp {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.msg-image {
+    max-width: 20vw;
+}
+
+.msg-username {
+    color: rgba(0, 0, 0, 0.35);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -96,5 +137,14 @@
 
     #message:focus {
         background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .msg-content {
+        background-color: rgb(36, 36, 36);
+        color: white;
+    }
+
+    .msg-username {
+        color: rgba(255, 255, 255, 0.35);
     }
 }

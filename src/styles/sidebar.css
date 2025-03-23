@@ -64,6 +64,21 @@
     margin-bottom: 10px;
 }
 
+.sidebar-user {
+    width: 100%;
+    margin: 0px;
+    padding: 1rem;
+    transition: 200ms;
+}
+
+.sidebar-user.focused {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-user:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 @media (prefers-color-scheme: dark) {
     .sidebar {
         background-color: rgba(36, 36, 36, 0.8);
@@ -71,6 +86,14 @@
     }
 
     .sidebar-button:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .sidebar-user:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar-user.focused {
         background-color: rgba(255, 255, 255, 0.15);
     }
 }
