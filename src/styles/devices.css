@@ -1,0 +1,49 @@
+.devices {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 300px;
+    overflow: auto;
+}
+
+.device {
+    height: 3rem;
+    width: auto;
+    line-height: 3rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 1rem;
+    transition: 200ms;
+}
+
+.device:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.current {
+    background-color: rgba(0, 255, 0, 0.8);
+}
+
+.current:hover {
+    background-color: rgba(0, 255, 0, 0.8);
+}
+
+@media (prefers-color-scheme: dark) {
+    .device {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .device:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .current {
+        background-color: rgba(0, 121, 0, 0.8);
+    }
+
+    .current:hover {
+        background-color: rgba(0, 121, 0, 0.8);
+    }
+}

@@ -13,6 +13,8 @@ import Message from "./components/Message";
 import socket from "./utils/chat/socket";
 import MediaViewer from "./components/MediaViewer";
 import { BASEURL } from "./config";
+import BasicModal from "./components/BasicModal";
+import DeviceList from "./components/DeviceList";
 
 const userInfo = (await getUserInfo())["data"];
 let checkedLogin = false;
@@ -33,7 +35,13 @@ function App() {
 
 
     document.title = "Pigon"
+
+    //modals
     const [showNewChatModal, setShowNewChatModal] = useState(false);
+    const [showDevicesModal, setShowDevicesModal] = useState(false);
+
+
+
     const [chatList, setChatList] = useState(null);
     const [message, setMessage] = useState("");
     const [selectedChat, setSelectedChat] = useState(null)
@@ -135,7 +143,7 @@ function App() {
                     <CgLogOut onClick={logoutHandler} className="sidebar-button" />
                 </SidebarItem>
                 <SidebarItem>
-                    <CgLaptop className="sidebar-button" />
+                    <CgLaptop className="sidebar-button" onClick={() => { setShowDevicesModal(true) }} />
                 </SidebarItem>
                 <SidebarItem>
                     <CgAdd className="sidebar-button" onClick={() => { setShowNewChatModal(true) }}></CgAdd>
@@ -180,6 +188,12 @@ function App() {
         {showNewChatModal ? <NewChatModal onResult={handleCreateChat} onClose={() => { setShowNewChatModal(false) }} /> : ""}
 
         {showMediaViewer ? <MediaViewer type={mediaType} url={mediaSource} onClose={() => { setShowMediaViewer(false) }} /> : ""}
+
+        {/* Devices modal */}
+
+        {showDevicesModal ? <BasicModal title="Devices" onClose={() => { setShowDevicesModal(false) }}>
+            <DeviceList />
+        </BasicModal> : ""}
     </>
 }
 

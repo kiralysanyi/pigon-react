@@ -10,12 +10,10 @@ function sanitizeInput(input) {
 }
 
 function decodeHTML(text) {
-    console.log("Decode:", text)
     if (!text) return "";
 
     const parser = new DOMParser();
     const decodedString = parser.parseFromString(text, "text/html").body.textContent;
-    console.log("Decoded:", decodedString)
     return decodedString;
 }
 

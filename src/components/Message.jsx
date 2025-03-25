@@ -5,7 +5,6 @@ import messageProcessor from "../utils/chat/messageProcessor";
 const userInfo = (await getUserInfo())["data"];
 
 function Message({ type, content, senderName, senderId, date, onClick = () => { } }) {
-    console.log(senderId, userInfo.id)
     if (type == "text") {
         content = messageProcessor(content)
         return <div onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
