@@ -15,10 +15,12 @@ import MediaViewer from "./components/MediaViewer";
 import { BASEURL } from "./config";
 import BasicModal from "./components/BasicModal";
 import DeviceList from "./components/DeviceList";
+import Confirm from "./components/Confirm";
 
 const userInfo = (await getUserInfo())["data"];
 let checkedLogin = false;
 let mediaSource, mediaType = null;
+
 
 function App() {
     const navigate = useNavigate();
@@ -39,6 +41,7 @@ function App() {
     //modals
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [showDevicesModal, setShowDevicesModal] = useState(false);
+    
 
 
 
@@ -194,6 +197,8 @@ function App() {
         {showDevicesModal ? <BasicModal title="Devices" onClose={() => { setShowDevicesModal(false) }}>
             <DeviceList />
         </BasicModal> : ""}
+
+        
     </>
 }
 
