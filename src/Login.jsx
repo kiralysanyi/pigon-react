@@ -22,9 +22,9 @@ function Login() {
         console.log("kecske", data);
         if (data.success) {
             setTimeout(() => {
-                navigate("/app")
+                navigate("/app");
+                location.reload()
             }, 1000);
-
         }
     }
 
