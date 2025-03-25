@@ -46,7 +46,7 @@ function DeviceList() {
 
     return <>
         <div className="devices">
-            {devices.map((device) => <div onClick={() => {removeDeviceHandler(device.deviceID)}} className={`device ${device.current ? "current" : ""}`}>{`${device.deviceInfo.deviceName} | ${useragentParser(device.deviceInfo["user-agent"]).browser}:${useragentParser(device.deviceInfo["user-agent"]).version}`}</div>)}
+            {devices.map((device) => <div key={device.deviceID} onClick={() => {removeDeviceHandler(device.deviceID)}} className={`device ${device.current ? "current" : ""}`}>{`${device.deviceInfo.deviceName} | ${useragentParser(device.deviceInfo["user-agent"]).browser}:${useragentParser(device.deviceInfo["user-agent"]).version}`}</div>)}
         </div>
         {showConfirm? <Confirm onCancel={() => {setShowConfirm(false)}} onConfirm={rmDevice} title={confirmTitle} content={confirmContent}/>:""}
     </>

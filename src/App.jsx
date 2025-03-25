@@ -16,6 +16,8 @@ import { BASEURL } from "./config";
 import BasicModal from "./components/BasicModal";
 import DeviceList from "./components/DeviceList";
 import Confirm from "./components/Confirm";
+import { MdPeopleAlt } from "react-icons/md";
+import NewGroupModal from "./components/NewGroupModal";
 
 const userInfo = (await getUserInfo())["data"];
 let checkedLogin = false;
@@ -41,7 +43,7 @@ function App() {
     //modals
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [showDevicesModal, setShowDevicesModal] = useState(false);
-    
+
 
 
 
@@ -50,6 +52,7 @@ function App() {
     const [selectedChat, setSelectedChat] = useState(null)
     const [messages, setMessages] = useState(null);
     const [showMediaViewer, setShowMediaViewer] = useState(false);
+    const [showNewGroupModal, setShowNewGroupModal] = useState(false);
 
     //handling incoming messages
     const msgHandler = (data) => {
@@ -151,6 +154,9 @@ function App() {
                 <SidebarItem>
                     <CgAdd className="sidebar-button" onClick={() => { setShowNewChatModal(true) }}></CgAdd>
                 </SidebarItem>
+                <SidebarItem>
+                    <MdPeopleAlt onClick={() => { setShowNewGroupModal(true) }} className="sidebar-button" />
+                </SidebarItem>
             </SidebarGroup>
         </Sidebar>
         <div className="chat">
@@ -198,7 +204,8 @@ function App() {
             <DeviceList />
         </BasicModal> : ""}
 
-        
+        {showNewGroupModal ? <NewGroupModal onCreate={() => {setShowNewGroupModal(false); updateChatList()}} onCancel={() => { setShowNewGroupModal(false) }} /> : ""}
+
     </>
 }
 
