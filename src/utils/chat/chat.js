@@ -216,4 +216,53 @@ async function selectAndSend(chatid) {
     fileInput.click();
 }
 
-export { addPrivateChat, sendFile, sendMessage, searchUsers, createGroupChat, getChats, getMessages, selectAndSend }
+function deleteGroup(chatID) {
+    return new Promise((resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/chat/group",
+            {
+                method: "DELETE",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chatid: chatID })
+            }).then(async (res) => {
+                let response = await res.json();
+                if (response.success == false) {
+                    rejected(response)
+                    return;
+                }
+
+                if (response.success == true) {
+                    resolved(response)
+                }
+            });
+    })
+
+}
+
+function leaveGroup(chatID) {
+    return new Promise((resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/chat/leave", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ chatid: chatID })
+        }).then(async (res) => {
+            let response = await res.json();
+            if (response.success == false) {
+                rejected(response)
+                return;
+            }
+
+            if (response.success == true) {
+                resolved(response)
+            }
+        }).catch((err) => {
+            console.error(err);
+            rejected(err);
+        })
+    })
+}
+
+export { addPrivateChat, sendFile, sendMessage, searchUsers, createGroupChat, getChats, getMessages, selectAndSend, deleteGroup, leaveGroup }

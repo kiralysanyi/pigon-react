@@ -18,6 +18,7 @@ import DeviceList from "./components/DeviceList";
 import Confirm from "./components/Confirm";
 import { MdPeopleAlt } from "react-icons/md";
 import NewGroupModal from "./components/NewGroupModal";
+import GroupManager from "./components/GroupManager";
 
 const userInfo = (await getUserInfo())["data"];
 let checkedLogin = false;
@@ -53,6 +54,7 @@ function App() {
     const [messages, setMessages] = useState(null);
     const [showMediaViewer, setShowMediaViewer] = useState(false);
     const [showNewGroupModal, setShowNewGroupModal] = useState(false);
+    const [showGroupManager, setShowGroupManager] = useState(false)
 
     //handling incoming messages
     const msgHandler = (data) => {
@@ -162,7 +164,7 @@ function App() {
         <div className="chat">
             {selectedChat ?
                 <div className="chat-header">
-                    <User style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} />
+                    <User onClick={() => { selectedChat.groupchat == 1 ? setShowGroupManager(true) : null }} style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} />
                 </div> : ""}
             <div className="chat-content">
                 {
@@ -204,7 +206,9 @@ function App() {
             <DeviceList />
         </BasicModal> : ""}
 
-        {showNewGroupModal ? <NewGroupModal onCreate={() => {setShowNewGroupModal(false); updateChatList()}} onCancel={() => { setShowNewGroupModal(false) }} /> : ""}
+        {showNewGroupModal ? <NewGroupModal onCreate={() => { setShowNewGroupModal(false); updateChatList() }} onCancel={() => { setShowNewGroupModal(false) }} /> : ""}
+
+        {showGroupManager ? <GroupManager chatInfo={selectedChat} onClose={() => { setShowGroupManager(false); updateChatList(); }} onLeave={() => { setShowGroupManager(false); updateChatList(); setSelectedChat(null); setMessages(null); setMessage(null) }} /> : ""}
 
     </>
 }

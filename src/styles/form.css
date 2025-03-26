@@ -72,6 +72,11 @@ label {
     background-color: var(--secondary-hover) !important;
 }
 
+.btn-danger {
+    background-color: rgb(255, 0, 0) !important;
+    color: white !important;
+}
+
 @media (prefers-color-scheme: dark) {
     .form {
         background-color: rgba(0, 0, 0, 0.4);

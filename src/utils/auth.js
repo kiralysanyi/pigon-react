@@ -63,12 +63,11 @@ async function getDevices() {
 }
 
 async function getUserInfo(userID = null) {
-    const body = userID ? JSON.stringify({ userID }) : null;
-    const response = await fetch(BASEURL + '/api/v1/auth/userinfo', {
+    let url = userID? BASEURL + '/api/v1/auth/userinfo?userID=' + userID: BASEURL + '/api/v1/auth/userinfo'
+    const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: "include",
-        body: body
     });
     const data = await response.json();
     if (data.success) {
