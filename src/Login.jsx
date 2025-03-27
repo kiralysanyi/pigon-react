@@ -47,10 +47,15 @@ function Login() {
                 return;
             }
             passkeyAuth(deviceName).then((result) => {
-                alertContent = result.message;
-                alertTitle = "Error";
-                setAlertShown(true);
-                setShowLoading(false);
+                if (result.success == false) {
+                    alertContent = result.message;
+                    alertTitle = "Error";
+                    setAlertShown(true);
+                    setShowLoading(false);
+                } else {
+                    navigate("/app");
+                    location.reload();
+                }
             });
         }
     }

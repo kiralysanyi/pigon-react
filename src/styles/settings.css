@@ -33,6 +33,7 @@
     border-radius: 15px;
     padding: 1rem;
     gap: 1rem;
+    max-width: 80%;
 }
 
 .settings-pfp {
@@ -44,6 +45,26 @@
 
 .selected {
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+.settings-btn {
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    border: none;
+    height: 2rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+}
+
+.settings-section input {
+    border: none;
+    border-radius: 0.5rem;
+    min-height: 2.5rem;
+}
+
+.settings-section textarea {
+    border-radius: 0.5rem;
+    resize: none;
 }
 
 @media (prefers-color-scheme: dark) {

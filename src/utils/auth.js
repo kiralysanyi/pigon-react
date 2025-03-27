@@ -72,8 +72,6 @@ async function getUserInfo(userID = null) {
             credentials: "include",
         });
 
-
-
         const data = await response.json();
         if (data.success) {
             sessionStorage.setItem("userinfo", JSON.stringify(data.data));
@@ -283,6 +281,7 @@ function changePfp() {
 const httprequest = (method, endpoint, body, isJson = false) => {
     return new Promise((resolved) => {
         let req = new XMLHttpRequest();
+        req.withCredentials = true;
         req.open(method, endpoint);
         if (isJson) {
             req.setRequestHeader("Content-Type", "application/json")
@@ -310,7 +309,50 @@ const passkeyAuth = async (devname) => {
     let response = JSON.parse(await httprequest("POST", BASEURL + "/api/v1/auth/webauthn/auth", JSON.stringify({ authentication, challenge, deviceName: devname }), true));
     console.log(response)
     return response
-
 }
 
-export { login, register, checkIfLoggedIn, changePassword, authenticateWebAuthn, deleteAccount, getDevices, getUserInfo, getWebAuthnChallenge, logout, registerWebAuthn, removeDevice, getExtraInfo, postExtraInfo, changePfp, passkeyAuth }
+const registerPasskey = (username) => {
+    return new Promise(async (resolved) => {
+        try {
+            let challenge = JSON.parse(await httprequest("GET", BASEURL + "/api/v1/auth/webauthn/challenge"))["challenge"];
+
+            const registration = await client.register({
+                user: username,
+                challenge: challenge,
+                /* possibly other options */
+            });
+            console.log(registration);
+
+            let res = await httprequest("POST", BASEURL + "/api/v1/auth/webauthn/register", JSON.stringify({
+                registration,
+                challenge,
+            }), true)
+
+
+            resolved(JSON.parse(res));
+        } catch (error) {
+            console.error(error)
+            resolved({
+                success: false,
+                message: "Failed to create passkey"
+            })
+        }
+
+    })
+}
+
+const removeAllPasskeys = async () => {
+    let res = await fetch(BASEURL + "/api/v1/auth/webauthn/passkeys", {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+
+    let result = await res.json();
+    console.log(result);
+    return result;
+}
+
+export { login, register, checkIfLoggedIn, changePassword, authenticateWebAuthn, deleteAccount, getDevices, getUserInfo, getWebAuthnChallenge, logout, registerWebAuthn, removeDevice, getExtraInfo, postExtraInfo, changePfp, passkeyAuth, registerPasskey, removeAllPasskeys }

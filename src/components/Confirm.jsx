@@ -7,7 +7,7 @@ function Confirm({ title, content, onCancel = () => { }, onConfirm = () => {} })
                 <h1>{title}</h1>
                 <p>{content}</p>
                 <input type="button" value="Cancel" onClick={onCancel} />
-                <input type="button" value="Confirm" onClick={onConfirm} />
+                <input type="button" className="btn-danger" value="Confirm" onClick={onConfirm} />
             </div>
         </div>
     </>
