@@ -1,12 +1,22 @@
-# React + Vite
+# Pigon (react)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Why this one?
 
-Currently, two official plugins are available:
+I realized the original webui was a smoking pile of garbage, so I made it again but this time in react.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What's missing
 
-## Expanding the ESLint configuration
+- It won't have videochat / calling functionality because I hate webrtc maybe one day I will add it. (The original one has it but it won't work most of the time anyway xD)
+- Animations are missing
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Will this replace the original webui?
+
+- Yes and no. We will still have the original webui and this one too, both accessible
+
+## What's next?
+
+- One day I will rewrite the whole backend in go with a bunch of improvements, I will rewrite this webui using react and tailwind, and rewrite the android app too because that one is a pile of garbage too.
+
+## What's used in this project
+
+- Vite + React, react-icons, socket io
