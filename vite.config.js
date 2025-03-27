@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   esbuild: {
-    target: 'esnext'
+    target: 'esnext',
+    drop: ["console", "debugger"]
   },
   build: {
     target: "esnext"
