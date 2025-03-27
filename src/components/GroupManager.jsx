@@ -4,7 +4,8 @@ import BasicModal from "./BasicModal";
 import { Spacer } from "./Sidebar";
 import User from "./User";
 import Confirm from "./Confirm";
-import { deleteGroup, leaveGroup } from "../utils/chat/chat";
+import { addGroupUser, deleteGroup, leaveGroup, removeGroupUser, searchUsers } from "../utils/chat/chat";
+import removeFromArray from "../utils/removeFromArray";
 const userInfo = (await getUserInfo())["data"];
 
 /**
@@ -33,6 +34,19 @@ let confirmTitle, confirmContent, confirmCallback = null;
 
 function GroupManager({ chatInfo, onLeave = () => { }, onClose = () => { } }) {
     const [showConfirm, setShowConfirm] = useState(false);
+
+    const [searchResults, setSearchResults] = useState([])
+
+    const handleSearchInputChange = async (e) => {
+        const query = e.target.value;
+        searchUsers(query).then((results) => {
+            console.log(results)
+            setSearchResults(results)
+        }).catch((err) => {
+            console.error(err);
+            window.alert(err);
+        })
+    }
 
     const isAdmin = chatInfo.initiator == userInfo.id;
     const [participants, setParticipants] = useState(null)
@@ -80,17 +94,57 @@ function GroupManager({ chatInfo, onLeave = () => { }, onClose = () => { } }) {
         setShowConfirm(true)
     }
 
+    const addUserHandler = (user) => {
+        if (chatInfo.participants.includes(user.id)) {
+            return;
+        }
+        addGroupUser(chatInfo.chatid, user.id).then((result) => {
+            chatInfo.participants.push(user.id);
+            (async () => {
+                let data = await participantsInfoFetcher(chatInfo.participants)
+                setParticipants(data)
+            })()
+        }).catch((err) => {
+            console.error(err);
+        })
+    }
+
+    const removeUserHandler = (user) => {
+        if (user.id == userInfo.id) {
+            return;
+        }
+        confirmCallback = () => {
+            confirmCallback = null;
+            removeGroupUser(chatInfo.chatid, user.id).then((result) => {
+                chatInfo.participants = removeFromArray(chatInfo.participants, user.id);
+                (async () => {
+                    let data = await participantsInfoFetcher(chatInfo.participants)
+                    setParticipants(data)
+                    setShowConfirm(false);
+                })()
+            }).catch((err) => { console.error(err); setShowConfirm(false) })
+        }
+
+        confirmContent = `Do you want to remove "${user.username}" from this group?`;
+        confirmTitle = "Confirm";
+        setShowConfirm(true);
+    }
+
     return <BasicModal style={{ width: "80%", height: "80%" }} title={"Group: " + chatInfo.name} onClose={onClose}>
         <div className="form groupmodal" style={{ position: "relative", transform: "none", top: "0px", left: "0px", backdropFilter: "none", display: "flex", flexDirection: "column", gap: "1rem" }}>
             <h2>Participants</h2>
             <div className="participants">
-                {participants ? participants.map((participant) => <User key={participant["id"]} id={participant.id} username={participant.username} />) : ""}
+                {participants ? participants.map((participant) => <User onClick={() => { removeUserHandler(participant) }} key={participant["id"]} id={participant.id} username={participant.username} />) : ""}
             </div>
 
             {isAdmin ? <Fragment>
                 <h2>Add participants</h2>
-                <input type="text" placeholder="Search users" />
-                <div></div>
+                <input type="text" onChange={handleSearchInputChange} placeholder="Search users" />
+                <div className="modal-search-results">
+                    {
+                        searchResults.map(result => result.id != userInfo.id ? <User className="sidebar-user" onClick={() => { addUserHandler(result) }} key={result.id} username={result.username} id={result.id} /> : "")
+                    }
+                </div>
             </Fragment> : ""}
             <Spacer />
             <div>

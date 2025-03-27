@@ -265,4 +265,46 @@ function leaveGroup(chatID) {
     })
 }
 
-export { addPrivateChat, sendFile, sendMessage, searchUsers, createGroupChat, getChats, getMessages, selectAndSend, deleteGroup, leaveGroup }
+function removeGroupUser(chatID, userID) {
+    return new Promise((resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/chat/groupuser", {
+            method: "DELETE",
+            body: JSON.stringify({ chatid: chatID, targetid: userID }),
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(async (res) => {
+            let response = await res.json();
+            if (response.success == true) {
+                resolved(response)
+            } else {
+                rejected(response)
+            }
+        }).catch((err) => {
+            rejected(err);
+        });
+    });
+}
+
+function addGroupUser(chatID, userID) {
+    return new Promise((resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/chat/groupuser", {
+            method: "POST",
+            credentials: "include",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatid: chatID, targetids: [userID] })
+        }).then(async (res) => {
+            let response = await res.json();
+            if (response.success == true) {
+                resolved(response)
+            } else {
+                rejected(response)
+            }
+        }).catch((err) => {
+            rejected(err);
+        })
+    })
+}
+
+export { addPrivateChat, sendFile, sendMessage, searchUsers, createGroupChat, getChats, getMessages, selectAndSend, deleteGroup, leaveGroup, removeGroupUser, addGroupUser }
