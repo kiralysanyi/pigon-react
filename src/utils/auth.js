@@ -1,4 +1,5 @@
 import { BASEURL } from "../config";
+import {client} from '@passwordless-id/webauthn'
 
 async function login(username, password, deviceName = '') {
     const response = await fetch(BASEURL + '/api/v1/auth/login', {
@@ -266,4 +267,41 @@ function changePfp() {
     fileInput.click();
 }
 
-export { login, register, checkIfLoggedIn, changePassword, authenticateWebAuthn, deleteAccount, getDevices, getUserInfo, getWebAuthnChallenge, logout, registerWebAuthn, removeDevice, getExtraInfo, postExtraInfo, changePfp }
+
+//webauthn things
+//TODO: rewrite this legacy shit
+
+const httprequest = (method, endpoint, body, isJson = false) => {
+    return new Promise((resolved) => {
+        let req = new XMLHttpRequest();
+        req.open(method, endpoint);
+        if (isJson) {
+            req.setRequestHeader("Content-Type", "application/json")
+        }
+        req.addEventListener("loadend", () => {
+            console.log(req.responseText);
+            resolved(req.responseText);
+        })
+        req.send(body);
+    });
+
+}
+
+const passkeyAuth = async (devname) => {
+    let challenge = JSON.parse(await httprequest("GET", BASEURL + "/api/v1/auth/webauthn/challenge"))["challenge"];
+
+    const authentication = await client.authenticate({
+        /* Required */
+        challenge: challenge,
+        timeout: 60000
+    })
+
+    console.log(authentication)
+
+    let response = JSON.parse(await httprequest("POST", BASEURL + "/api/v1/auth/webauthn/auth", JSON.stringify({ authentication, challenge, deviceName: devname }), true));
+    console.log(response)
+    return response
+
+}
+
+export { login, register, checkIfLoggedIn, changePassword, authenticateWebAuthn, deleteAccount, getDevices, getUserInfo, getWebAuthnChallenge, logout, registerWebAuthn, removeDevice, getExtraInfo, postExtraInfo, changePfp, passkeyAuth }

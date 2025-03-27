@@ -20,23 +20,19 @@ import NewGroupModal from "./components/NewGroupModal";
 import GroupManager from "./components/GroupManager";
 
 const userInfo = (await getUserInfo())["data"];
-let checkedLogin = false;
 let mediaSource, mediaType = null;
 
 
 function App() {
     const navigate = useNavigate();
-    if (!checkedLogin) {
-        checkIfLoggedIn().then((isLoggedIn) => {
-            if (!isLoggedIn) {
+
+    useEffect(() => {
+        checkIfLoggedIn().then((result) => {
+            if (result == false) {
                 navigate("/login")
-            } else {
-                checkedLogin = true;
             }
         })
-    }
-
-
+    }, [])
 
     document.title = "Pigon"
 
@@ -56,7 +52,13 @@ function App() {
 
     //handling incoming messages
     const msgHandler = (data) => {
-        data = JSON.parse(data)
+        try {
+            data = JSON.parse(data)
+        } catch (error) {
+            console.error(error)
+            return;
+        }
+
         if (selectedChat != null) {
             if (data.chatID == selectedChat.chatid) {
                 data.date = new Date().toISOString();
@@ -137,7 +139,7 @@ function App() {
                 <Spacer />
                 <SidebarGroup className="horizontal">
 
-                    <User onClick={() => {navigate("/settings")}} id={userInfo.id} username={userInfo.username} />
+                    {userInfo ? <User onClick={() => { navigate("/settings") }} id={userInfo.id} username={userInfo.username} /> : ""}
                 </SidebarGroup>
             </SidebarGroup>
             <Spacer />

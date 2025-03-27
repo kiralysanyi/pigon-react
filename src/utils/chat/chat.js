@@ -156,7 +156,7 @@ function createGroupChat(chatName, participants) {
  */
 async function getMessages(chatid, page = 1) {
     return new Promise((resolved, rejected) => {
-        fetch(BASEURL + "/api/v1/chat/messages?chatid=" + chatid + "?page=" + page, {
+        fetch(BASEURL + "/api/v1/chat/messages?chatid=" + chatid + "&page=" + page, {
             method: "GET",
             credentials: "include",
             headers: {
