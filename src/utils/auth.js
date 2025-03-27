@@ -64,7 +64,7 @@ async function getDevices() {
 }
 
 async function getUserInfo(userID = null) {
-    if (sessionStorage.getItem("userinfo") == null) {
+    if (sessionStorage.getItem("userinfo") == null || userID != null) {
         let url = userID ? BASEURL + '/api/v1/auth/userinfo?userID=' + userID : BASEURL + '/api/v1/auth/userinfo'
         const response = await fetch(url, {
             method: 'GET',

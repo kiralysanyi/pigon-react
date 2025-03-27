@@ -18,6 +18,7 @@ import DeviceList from "./components/DeviceList";
 import { MdPeopleAlt } from "react-icons/md";
 import NewGroupModal from "./components/NewGroupModal";
 import GroupManager from "./components/GroupManager";
+import Chat from "./components/Chat";
 
 const userInfo = (await getUserInfo())["data"];
 let mediaSource, mediaType = null;
@@ -78,6 +79,10 @@ function App() {
         if (arrayIndex === -1) return;
 
         chatList[arrayIndex].lastInteraction = new Date().toISOString();
+
+        if (selectedChat.chatid != data.chatID) {
+            chatList[arrayIndex]["hasUnreadMessages"] = true;
+        }
 
         setChatList(chatList.sort((a, b) => new Date(b.lastInteraction) - new Date(a.lastInteraction)))
     }
@@ -197,7 +202,7 @@ function App() {
                 {/* Chat list */}
                 <h1>Chats</h1>
                 <input style={{ width: "auto" }} type="text" placeholder="Search chats" />
-                {chatList ? chatList.map(chat => <User groupmode={chat.groupchat} className={`sidebar-user ${selectedChat ? (selectedChat.chatid == chat.chatid ? "focused" : "") : ""}`} onClick={() => { selectChatHandler(chat) }} key={chat.id} username={chat.name} id={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
+                {chatList ? chatList.map(chat => <Chat groupmode={chat.groupchat} className={`sidebar-user ${selectedChat ? (selectedChat.chatid == chat.chatid ? "focused" : "") : ""}`} onClick={() => { selectChatHandler(chat) }} key={chat.id} chatname={chat.name} pfpid={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
             </SidebarGroup>
             <Spacer />
             <SidebarGroup className="sidebar-bottom horizontal">
@@ -218,7 +223,7 @@ function App() {
         <div className="chat">
             {selectedChat ?
                 <div className="chat-header">
-                    <User groupmode={selectedChat ? selectedChat.groupchat : null} onClick={() => { selectedChat.groupchat == 1 ? setShowGroupManager(true) : null }} style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} />
+                    <Chat groupmode={selectedChat ? selectedChat.groupchat : null} onClick={() => { selectedChat.groupchat == 1 ? setShowGroupManager(true) : null }} style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} chatname={selectedChat.name} pfpid={removeFromArray(selectedChat.participants, userInfo.id)[0]} />
                 </div> : ""}
             <div className="chat-content" onScroll={scrollHandler}>
                 {
