@@ -59,6 +59,8 @@ function App() {
             return;
         }
 
+
+
         if (selectedChat != null) {
             if (data.chatID == selectedChat.chatid) {
                 data.date = new Date().toISOString();
@@ -71,6 +73,13 @@ function App() {
                 setMessages([data, ...messages])
             }
         }
+
+        let arrayIndex = chatList.findIndex(chat => chat.chatid === data.chatID);
+        if (arrayIndex === -1) return;
+
+        chatList[arrayIndex].lastInteraction = new Date().toISOString();
+
+        setChatList(chatList.sort((a, b) => new Date(b.lastInteraction) - new Date(a.lastInteraction)))
     }
 
     const updateChatList = () => {
@@ -132,7 +141,7 @@ function App() {
 
     const [page, setPage] = useState(1);
     const [reachedLastPage, setReachedLastPage] = useState(false);
-    
+
 
     const selectChatHandler = (chat) => {
         setReachedLastPage(false);
@@ -222,7 +231,7 @@ function App() {
                                 setShowMediaViewer(true);
                             }
                         }}
-                        
+
                         date={message.date}
                         senderId={message.senderid}
                         senderName={message.username}
