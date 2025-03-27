@@ -5,6 +5,7 @@ import Login from './Login';
 import Register from './Register';
 import "./styles/index.css"
 import App from './App';
+import Settings from './Settings';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')).render(
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/app' element={<App />} />
+      <Route path='/settings' element={<Settings />} />
     </Routes>
   </BrowserRouter>
 )

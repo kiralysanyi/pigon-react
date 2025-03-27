@@ -2,7 +2,7 @@ import "../styles/sidebar.css"
 
 function SidebarItem({ children, className = "", onClick = () => { } }) {
     return <>
-        <div className={`sidebar-item ${className}`}>
+        <div onClick={onClick} className={`sidebar-item ${className}`}>
             {children}
         </div>
     </>

@@ -9,6 +9,12 @@
     color: black;
 }
 
+.userimage {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 2.5rem;
+}
+
 .chat-messagebox form {
     top: 0px;
     left: 0px;

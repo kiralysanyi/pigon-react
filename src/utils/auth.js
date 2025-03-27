@@ -63,7 +63,7 @@ async function getDevices() {
 }
 
 async function getUserInfo(userID = null) {
-    let url = userID? BASEURL + '/api/v1/auth/userinfo?userID=' + userID: BASEURL + '/api/v1/auth/userinfo'
+    let url = userID ? BASEURL + '/api/v1/auth/userinfo?userID=' + userID : BASEURL + '/api/v1/auth/userinfo'
     const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -180,4 +180,90 @@ async function checkIfLoggedIn() {
     return true;
 }
 
-export { login, register, checkIfLoggedIn, changePassword, authenticateWebAuthn, deleteAccount, getDevices, getUserInfo, getWebAuthnChallenge, logout, registerWebAuthn, removeDevice }
+function getExtraInfo(userID) {
+    return new Promise(async (resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/auth/extrainfo?userID=" + userID, { credentials: "include" }).then(async (info) => {
+            info = await info.json();
+            console.log(info);
+            if (info.success == true) {
+                //load info to inputs
+                info = info.data;
+                console.log(info);
+                resolved(info)
+            } else {
+                rejected(info)
+            }
+        })
+
+    })
+
+}
+
+function postExtraInfo(fullname, bio) {
+    return new Promise((resolved, rejected) => {
+        fetch(BASEURL + "/api/v1/auth/extrainfo", {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({
+                data: {
+                    fullname: fullname,
+                    bio: bio
+                }
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(async (res) => {
+            res = await res.json();
+            if (res.success == true) {
+                resolved();
+            } else {
+                rejected(res);
+                console.error(res);
+            }
+        }).catch((err) => {
+            console.error(err);
+            rejected(err);
+        })
+    })
+}
+
+function changePfp() {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/jpg, image/jpeg, image/png";
+
+    fileInput.addEventListener("change", async () => {
+        if (!fileInput.files.length) {
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+
+        formData.append('image', file);
+
+        try {
+            const response = await fetch(BASEURL + '/api/v1/auth/pfp', {
+                method: 'POST',
+                credentials: "include",
+                body: formData,
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                window.alert(`File uploaded successfully: ${result.message}`);
+                location.reload();
+            } else {
+                window.alert(`Error uploading file: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Upload failed:', error);
+            window.alert(`Failed to upload file`);
+        }
+    })
+
+    fileInput.click();
+}
+
+export { login, register, checkIfLoggedIn, changePassword, authenticateWebAuthn, deleteAccount, getDevices, getUserInfo, getWebAuthnChallenge, logout, registerWebAuthn, removeDevice, getExtraInfo, postExtraInfo, changePfp }

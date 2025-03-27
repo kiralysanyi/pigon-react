@@ -1,0 +1,66 @@
+.sidebar-settings-item {
+    width: calc(100% - 1rem);
+    height: 2.5rem;
+    line-height: 2.5rem;
+    padding-left: 1rem;
+    transition: 200ms;
+}
+
+.sidebar-settings-item:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    justify-items: start;
+    align-items: center;
+    align-content: center;
+    position: fixed;
+    width: calc(100% - 320px);
+    left: 320px;
+    top: 0px;
+    height: calc(100% - 2rem);
+    background-color: rgb(225, 225, 225);
+    padding-top: 2rem;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(205, 205, 205);
+    border-radius: 15px;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.settings-pfp {
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    align-self: center;
+}
+
+.selected {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .sidebar-settings-item:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .settings-content {
+        background-color: rgb(36, 36, 36);
+    }
+
+    .settings-section {
+        background-color: rgb(63, 63, 63);
+        color: white;
+    }
+
+    .selected {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}

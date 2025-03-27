@@ -15,7 +15,6 @@ import MediaViewer from "./components/MediaViewer";
 import { BASEURL } from "./config";
 import BasicModal from "./components/BasicModal";
 import DeviceList from "./components/DeviceList";
-import Confirm from "./components/Confirm";
 import { MdPeopleAlt } from "react-icons/md";
 import NewGroupModal from "./components/NewGroupModal";
 import GroupManager from "./components/GroupManager";
@@ -44,7 +43,6 @@ function App() {
     //modals
     const [showNewChatModal, setShowNewChatModal] = useState(false);
     const [showDevicesModal, setShowDevicesModal] = useState(false);
-
 
 
 
@@ -136,7 +134,11 @@ function App() {
         <Sidebar>
             <SidebarGroup>
                 <h1>Pigon</h1>
-                <span>Logged in as: {userInfo.username}</span>
+                <Spacer />
+                <SidebarGroup className="horizontal">
+
+                    <User onClick={() => {navigate("/settings")}} id={userInfo.id} username={userInfo.username} />
+                </SidebarGroup>
             </SidebarGroup>
             <Spacer />
             <SidebarGroup style={{ flexGrow: 1, gap: "1rem", overflow: "auto" }}>
@@ -209,7 +211,6 @@ function App() {
         {showNewGroupModal ? <NewGroupModal onCreate={() => { setShowNewGroupModal(false); updateChatList() }} onCancel={() => { setShowNewGroupModal(false) }} /> : ""}
 
         {showGroupManager ? <GroupManager chatInfo={selectedChat} onClose={() => { setShowGroupManager(false); updateChatList(); }} onLeave={() => { setShowGroupManager(false); updateChatList(); setSelectedChat(null); setMessages(null); setMessage(null) }} /> : ""}
-
     </>
 }
 
