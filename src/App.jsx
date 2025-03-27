@@ -73,14 +73,6 @@ function App() {
         }
     }
 
-    useEffect(() => {
-        socket.on("message", msgHandler)
-
-        return () => {
-            socket.off("message", msgHandler)
-        }
-    })
-
     const updateChatList = () => {
         getChats().then((response) => {
             if (response.success) {
@@ -91,6 +83,24 @@ function App() {
             }
         })
     }
+
+    const newChatHandler = () => {
+        updateChatList();
+        //maybe notify the user? idk, I will do it later.
+    }
+
+
+    useEffect(() => {
+        socket.on("message", msgHandler)
+        socket.on("newchat", newChatHandler)
+
+        return () => {
+            socket.off("message", msgHandler)
+            socket.off("newchat", newChatHandler)
+        }
+    })
+
+
 
     if (chatList == null) {
         updateChatList();

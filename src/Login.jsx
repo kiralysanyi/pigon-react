@@ -2,9 +2,10 @@ import { useState } from "react";
 import "./styles/form.css"
 import Alert from "./components/Alert";
 import { useNavigate } from "react-router";
-import { checkIfLoggedIn, login, passkeyAuth } from "./utils/auth";
+import { login, passkeyAuth } from "./utils/auth";
+import LoadingScreen from "./components/LoadingScreen";
 
-let alertTitle, alertContent;
+let alertTitle, alertContent, loaderText;
 
 
 
@@ -15,12 +16,15 @@ function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [deviceName, setDeviceName] = useState("")
+    const [deviceName, setDeviceName] = useState("");
+    const [showLoading, setShowLoading] = useState(false);
 
     const [usePasskey, setUsePasskey] = useState(false);
 
 
     const loginHandler = async (e) => {
+        loaderText = "Logging in..."
+        setShowLoading(true);
         if (!usePasskey) {
             let data = await login(username, password, deviceName)
             console.log("kecske", data);
@@ -29,6 +33,11 @@ function Login() {
                     navigate("/app");
                     location.reload()
                 }, 1000);
+            } else {
+                alertContent = data.data.message;
+                alertTitle = "Error"
+                setAlertShown(true)
+                setShowLoading(false)
             }
         }
 
@@ -37,7 +46,12 @@ function Login() {
                 console.log("Device name empty")
                 return;
             }
-            passkeyAuth(deviceName);
+            passkeyAuth(deviceName).then((result) => {
+                alertContent = result.message;
+                alertTitle = "Error";
+                setAlertShown(true);
+                setShowLoading(false);
+            });
         }
     }
 
@@ -76,6 +90,8 @@ function Login() {
                 }
             })()
         }
+
+        {showLoading ? <LoadingScreen text={loaderText} /> : ""}
     </>
 }
 
