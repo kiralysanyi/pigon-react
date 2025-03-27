@@ -4,10 +4,10 @@ import messageProcessor from "../utils/chat/messageProcessor";
 
 const userInfo = (await getUserInfo())["data"];
 
-function Message({ type, content, senderName, senderId, date, onClick = () => { } }) {
+function Message({ ref, type, content, senderName, senderId, date, onClick = () => { } }) {
     if (type == "text") {
         content = messageProcessor(content)
-        return <div onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
+        return <div ref={ref} onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
             <img className="pfp" src={BASEURL + "/api/v1/auth/pfp?id=" + senderId + "&smol=true"} alt="msg-pfp" />
             <div className="msg-content">
                 <span className="msg-username">{senderName}</span>
@@ -18,7 +18,7 @@ function Message({ type, content, senderName, senderId, date, onClick = () => { 
     }
 
     if (type == "image") {
-        return <div onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
+        return <div ref={ref} onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
             <img className="pfp" src={BASEURL + "/api/v1/auth/pfp?id=" + senderId + "&smol=true"} alt="msg-pfp" />
             <div className="msg-content">
                 <span className="msg-username">{senderName}</span>
@@ -29,7 +29,7 @@ function Message({ type, content, senderName, senderId, date, onClick = () => { 
     }
 
     if (type == "video") {
-        return <div onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
+        return <div ref={ref} onClick={onClick} className={`msg ${userInfo.id == senderId ? "msg-self" : ""}`}>
             <img className="pfp" src={BASEURL + "/api/v1/auth/pfp?id=" + senderId + "&smol=true"} alt="msg-pfp" />
             <div className="msg-content">
                 <span className="msg-username">{senderName}</span>

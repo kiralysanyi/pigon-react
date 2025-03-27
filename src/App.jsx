@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sidebar, SidebarGroup, SidebarItem, Spacer } from "./components/Sidebar";
 import { CgAdd, CgImage, CgLaptop, CgLogOut } from "react-icons/cg"
 import NewChatModal from "./components/NewChatModal";
@@ -130,7 +130,13 @@ function App() {
         }
     }
 
+    const [page, setPage] = useState(1);
+    const [reachedLastPage, setReachedLastPage] = useState(false);
+    
+
     const selectChatHandler = (chat) => {
+        setReachedLastPage(false);
+        setPage(1);
         console.log(chat)
         setSelectedChat(chat);
         setMessage("");
@@ -141,6 +147,31 @@ function App() {
             console.error(err)
         })
     }
+
+
+
+    const scrollHandler = (e) => {
+        if (reachedLastPage) {
+            return;
+        }
+        console.log(e.currentTarget.scrollTop * -1, e.currentTarget.scrollHeight - 1500)
+        if (e.currentTarget.scrollTop * -1 > e.currentTarget.scrollHeight - 1500) {
+            console.log("EEEE")
+            setPage(page + 1);
+            getMessages(selectedChat.chatid, page + 1).then((result) => {
+                if (result.length == 0) {
+                    setReachedLastPage(true);
+                    return;
+                }
+                console.log(result)
+                setMessages(messages.concat(result))
+            }).catch((err) => {
+                console.error(err)
+            })
+        }
+    }
+
+    console.log(messages)
 
     return <>
         <Sidebar>
@@ -180,7 +211,7 @@ function App() {
                 <div className="chat-header">
                     <User groupmode={selectedChat ? selectedChat.groupchat : null} onClick={() => { selectedChat.groupchat == 1 ? setShowGroupManager(true) : null }} style={{ height: "100%", backgroundColor: "transparent", padding: "0px", marginLeft: "1rem" }} username={selectedChat.name} id={removeFromArray(selectedChat.participants, userInfo.id)[0]} />
                 </div> : ""}
-            <div className="chat-content">
+            <div className="chat-content" onScroll={scrollHandler}>
                 {
                     messages ? messages.map((message) => <Message
                         onClick={() => {
@@ -191,6 +222,7 @@ function App() {
                                 setShowMediaViewer(true);
                             }
                         }}
+                        
                         date={message.date}
                         senderId={message.senderid}
                         senderName={message.username}
