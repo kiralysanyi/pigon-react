@@ -1,5 +1,5 @@
 import { BASEURL } from "../config";
-import {client} from '@passwordless-id/webauthn'
+import { client } from '@passwordless-id/webauthn'
 
 async function login(username, password, deviceName = '') {
     const response = await fetch(BASEURL + '/api/v1/auth/login', {
@@ -64,22 +64,31 @@ async function getDevices() {
 }
 
 async function getUserInfo(userID = null) {
-    let url = userID ? BASEURL + '/api/v1/auth/userinfo?userID=' + userID : BASEURL + '/api/v1/auth/userinfo'
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: "include",
-    });
-    const data = await response.json();
-    if (data.success) {
-        console.log('User info retrieved', data.data);
+    if (sessionStorage.getItem("userinfo") == null) {
+        let url = userID ? BASEURL + '/api/v1/auth/userinfo?userID=' + userID : BASEURL + '/api/v1/auth/userinfo'
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: "include",
+        });
+
+
+
+        const data = await response.json();
+        if (data.success) {
+            sessionStorage.setItem("userinfo", JSON.stringify(data.data));
+            console.log('User info retrieved', data.data);
+        } else {
+            console.error('Failed to retrieve user info', data.message);
+        }
+        return data;
     } else {
-        console.error('Failed to retrieve user info', data.message);
+        return { data: JSON.parse(sessionStorage.getItem("userinfo")) }
     }
-    return data;
 }
 
 async function logout() {
+    sessionStorage.clear();
     const response = await fetch(BASEURL + '/api/v1/auth/logout', {
         method: 'GET',
         credentials: 'include' // Send cookies
