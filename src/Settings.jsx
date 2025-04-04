@@ -79,9 +79,9 @@ function Settings() {
             <div className="settings-content">
                 {selectedPage === "profile" && (
                     <div className="settings-section">
-                        <h1>Profile picture</h1>
+                        <h1 className="text-center text-4xl">Your profile</h1>
                         <img className="settings-pfp" src={`${BASEURL}/api/v1/auth/pfp?id=${userInfo.id}`} alt="Profile" />
-                        <span style={{ alignSelf: "center" }}>{userInfo.username}</span>
+                        <span className="self-center text-2xl">{userInfo.username}</span>
                         <button onClick={changePfp} className="settings-btn">Change profile picture</button>
 
                         <form onSubmit={(e) => e.preventDefault()}>

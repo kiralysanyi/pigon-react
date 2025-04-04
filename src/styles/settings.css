@@ -27,7 +27,7 @@
     border-radius: 15px;
     padding: 1rem;
     gap: 1rem;
-    @apply w-2/3;
+    @apply w-full sm:w-2/3;
 }
 
 .settings-pfp {
@@ -50,11 +50,6 @@
     font-size: 1rem;
 }
 
-.settings-section input {
-    border: none;
-    border-radius: 0.5rem;
-    min-height: 2.5rem;
-}
 
 .settings-section textarea {
     border-radius: 0.5rem;
