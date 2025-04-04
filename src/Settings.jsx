@@ -3,7 +3,7 @@ import { Sidebar, SidebarGroup, SidebarItem, Spacer } from "./components/Sidebar
 import "./styles/settings.css";
 import { BASEURL } from "./config";
 import { changePfp, getExtraInfo, getUserInfo, postExtraInfo, registerPasskey, removeAllPasskeys } from "./utils/auth";
-import { CgArrowLeft } from "react-icons/cg";
+import { CgArrowLeft, CgMenu } from "react-icons/cg";
 import { useNavigate } from "react-router";
 import Confirm from "./components/Confirm";
 import Alert from "./components/Alert";
@@ -18,6 +18,7 @@ function Settings() {
     const [fullname, setFullname] = useState("");
     const [bio, setBio] = useState("");
     const navigate = useNavigate();
+    const [hideSidebar, setHideSidebar] = useState(true)
 
     const [confirmData, setConfirmData] = useState(null);
 
@@ -54,17 +55,22 @@ function Settings() {
 
     return (
         <>
-            <Sidebar>
+            <button onClick={() => { setHideSidebar(!hideSidebar) }} className="block fixed top-0 left-0 w-16 h-16 z-49 bg-white dark:bg-black/40 backdrop-blur-lg dark:text-white lg:hidden">
+                {/* open sidebar, only show in mobile view */}
+                
+                <CgMenu className="w-full h-full p-3" />
+            </button>
+            <Sidebar hide={hideSidebar}>
                 <SidebarGroup className="horizontal">
-                    <CgArrowLeft onClick={() => navigate("/app")} style={{ padding: "0.5rem", width: "1.5rem", height: "1.5rem" }} />
-                    <h1>Settings</h1>
+                    <CgArrowLeft onClick={() => navigate("/app")} className="w-10 h-10 p-0" />
+                    <h1 className="text-3xl">Settings</h1>
                 </SidebarGroup>
                 <Spacer />
                 <SidebarGroup>
-                    <SidebarItem onClick={() => setSelectedPage("profile")} className={`sidebar-settings-item ${selectedPage === "profile" ? "selected" : ""}`}>
+                    <SidebarItem onClick={() => {setSelectedPage("profile"); setHideSidebar(true)}} className={`sidebar-settings-item ${selectedPage === "profile" ? "selected" : ""}`}>
                         Profile
                     </SidebarItem>
-                    <SidebarItem onClick={() => setSelectedPage("webauthn")} className={`sidebar-settings-item ${selectedPage === "webauthn" ? "selected" : ""}`}>
+                    <SidebarItem onClick={() => {setSelectedPage("webauthn"); setHideSidebar(true)}} className={`sidebar-settings-item ${selectedPage === "webauthn" ? "selected" : ""}`}>
                         Webauthn
                     </SidebarItem>
                 </SidebarGroup>
@@ -80,9 +86,9 @@ function Settings() {
 
                         <form onSubmit={(e) => e.preventDefault()}>
                             <label htmlFor="fullname">Full Name</label>
-                            <input value={fullname} onChange={(e) => setFullname(e.target.value)} type="text" name="fullname" id="fullname" style={{ width: "30vw" }} />
+                            <input className="input" value={fullname} onChange={(e) => setFullname(e.target.value)} type="text" name="fullname" id="fullname"  />
                             <label htmlFor="bio">Bio</label>
-                            <textarea value={bio} onChange={(e) => setBio(e.target.value)} name="bio" id="bio" rows="20" style={{ width: "30vw" }}></textarea>
+                            <textarea className="input" value={bio} onChange={(e) => setBio(e.target.value)} name="bio" id="bio" rows="20"></textarea>
                         </form>
                         <button
                             className="settings-btn"
