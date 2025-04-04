@@ -22,8 +22,8 @@ function NewChatModal({ onClose = () => { }, onResult = (result) => { } }) {
         <div className="modal-container">
             <div className="modal">
                 <div className="modal-header">
-                    <h1>New chat</h1>
-                    <input type="text" name="username" id="username" placeholder="Search users" onChange={handleSearchInputChange} />
+                    <h1 className="text-3xl">New chat</h1>
+                    <input className="input" type="text" name="username" id="username" placeholder="Search users" onChange={handleSearchInputChange} />
                     <CgClose className="modal-close" onClick={onClose} />
                 </div>
                 <div className="modal-content">
