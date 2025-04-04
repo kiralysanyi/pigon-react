@@ -51,7 +51,7 @@ function Register() {
         }
     }
 
-    return <>
+    return <div className="flex flex-col items-center justify-center h-dvh">
         <form className="form">
             <h1>Pigon Register</h1>
             <div className="form-group">
@@ -84,7 +84,7 @@ function Register() {
         }
 
         {showLoading ? <LoadingScreen text={loaderText} /> : ""}
-    </>
+    </div>
 }
 
 export default Register;

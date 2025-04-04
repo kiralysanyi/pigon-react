@@ -1,12 +1,11 @@
+@import "tailwindcss";
+
 .sidebar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 300px;
-    height: calc(100% - 20px);
+    @apply absolute top-0 left-0;
+    @apply h-full w-full lg:w-1/4;
+    @apply z-50;
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(16px);
-    display: flex;
     overflow-x: hidden;
     overflow-y: auto;
     color: black;
@@ -47,11 +46,10 @@
 }
 
 .sidebar-button {
-    width: 1.5rem;
-    height: 1.5rem;
-    padding: 0.5rem;
-    transition: 200ms;
-    border-radius: 1rem;
+    @apply w-10 h-10;
+    @apply p-1;
+    @apply rounded-2xl;
+    @apply transition;
 }
 
 .sidebar-button:hover {
@@ -65,10 +63,8 @@
 }
 
 .sidebar-user {
-    width: 100%;
-    margin: 0px;
-    padding: 1rem;
-    transition: 200ms;
+    @apply w-full h-14;
+    @apply transition;
 }
 
 .sidebar-user.focused {

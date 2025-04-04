@@ -16,9 +16,9 @@ function SidebarGroup({ children, className = "", style}) {
     </>
 }
 
-function Sidebar({ children }) {
+function Sidebar({ children, hide = true }) {
     return <>
-        <div className="sidebar">
+        <div className={`sidebar ${hide? "hidden": "flex"} lg:flex`}>
             {children}
         </div>
     </>

@@ -6,7 +6,7 @@ function Alert({ title, content, onClosed = () => { } }) {
     return <>
         <div className="dialog-container">
             <div className="alert-dialog">
-                <h1>{title}</h1>
+                <h1 className="text-3xl">{title}</h1>
                 <p>{content}</p>
                 <input type="button" value="OK" onClick={onClosed} />
             </div>

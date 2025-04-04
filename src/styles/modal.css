@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .modal-container {
     display: block;
     position: fixed;
@@ -34,12 +36,8 @@
 }
 
 .modal-close {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 2rem;
-    height: 2rem;
-    padding: 1rem;
+    @apply absolute top-2 right-2;
+    @apply h-8 w-8;
 }
 
 .modal-search-results {

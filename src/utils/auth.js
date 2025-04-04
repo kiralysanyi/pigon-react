@@ -74,7 +74,9 @@ async function getUserInfo(userID = null) {
 
         const data = await response.json();
         if (data.success) {
-            sessionStorage.setItem("userinfo", JSON.stringify(data.data));
+            if (userID == null) {
+                sessionStorage.setItem("userinfo", JSON.stringify(data.data));
+            }
             console.log('User info retrieved', data.data);
         } else {
             console.error('Failed to retrieve user info', data.message);

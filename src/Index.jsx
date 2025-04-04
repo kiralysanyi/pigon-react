@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router";
 import { checkIfLoggedIn } from "./utils/auth";
 
 function Index() {
+    document.title = "Welcome to pigon"
     const navigate = useNavigate();
     checkIfLoggedIn().then((isLoggedIn) => {
         if (isLoggedIn) {
@@ -11,8 +12,12 @@ function Index() {
         }
     })
     return <>
-        <NavLink to="/login">Login</NavLink>
-        <NavLink to="/register">Register</NavLink>
+        <div className="container p-2.5 mx-auto max-w-3xl h-dvh flex flex-col justify-center items-center bg-zinc-200/70 backdrop-blur-lg gap-4">
+            <h1 className="text-4xl">Welcome to pigon!</h1>
+            <h2 className="text-2xl">The worlds 4700th messaging app thing.</h2>
+            <NavLink className="btn" to="/login">Login</NavLink>
+            <NavLink className="btn" to="/register">Register</NavLink>
+        </div>
     </>
 }
 

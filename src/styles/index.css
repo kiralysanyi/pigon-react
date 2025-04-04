@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
     --primary-color: rgb(172, 255, 172);
     --primary-text-color: black;
@@ -21,4 +23,14 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+}
+
+.btn {
+    @apply bg-green-400 dark:bg-green-700;
+    @apply rounded-2xl;
+    @apply p-2;
+    @apply min-w-32;
+    @apply text-center;
+    @apply hover:bg-green-300 dark:hover:bg-green-600;
+    @apply transition;
 }

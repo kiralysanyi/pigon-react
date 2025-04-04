@@ -60,9 +60,9 @@ function Login() {
         }
     }
 
-    return <>
+    return <div className="flex flex-col items-center justify-center h-dvh">
         <form className="form">
-            <h1>Pigon Login</h1>
+            <h1 className="text-4xl">Pigon Login</h1>
 
             {!usePasskey ? <>
                 <div className="form-group">
@@ -97,7 +97,7 @@ function Login() {
         }
 
         {showLoading ? <LoadingScreen text={loaderText} /> : ""}
-    </>
+    </div>
 }
 
 export default Login;

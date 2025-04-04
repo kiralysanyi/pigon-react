@@ -1,25 +1,20 @@
+@import "tailwindcss";
+
 .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    max-width: 80%;
-    max-height: 80%;
-    min-width: 300px;
-    min-height: 300px;
-    background-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(8px);
-    border-radius: 15px;
-    color: black;
-    transform: translate(-50%, -50%);
-    padding: 20px;
+    @apply flex;
+    @apply flex-col;
+    @apply gap-5;
+    @apply container mx-auto;
+    @apply max-w-1/2;
+    @apply text-center p-10;
+    @apply rounded-2xl;
+    @apply backdrop-blur-2xl;
 }
 
+
 .form-group {
-    margin: 10px;
+    @apply mx-auto;
+    @apply text-left;
 }
 
 label {
@@ -27,9 +22,9 @@ label {
 }
 
 .form input[type=text], .form input[type=password] {
-    height: 1.5rem;
-    width: 300px;
-    max-width: 80vw;
+    @apply w-full;
+    @apply h-8;
+    @apply bg-white/10;
 }
 
 .form input[type=button] {

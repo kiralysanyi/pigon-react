@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Sidebar, SidebarGroup, SidebarItem, Spacer } from "./components/Sidebar";
-import { CgAdd, CgImage, CgLaptop, CgLogOut } from "react-icons/cg"
+import { CgAdd, CgClose, CgImage, CgLaptop, CgLogOut, CgMenu } from "react-icons/cg"
 import NewChatModal from "./components/NewChatModal";
 import { checkIfLoggedIn, getUserInfo, logout } from "./utils/auth";
 import { useNavigate } from "react-router";
@@ -44,15 +44,19 @@ function App() {
 
 
     const [chatList, setChatList] = useState(null);
+
     const [message, setMessage] = useState("");
     const [selectedChat, setSelectedChat] = useState(null)
     const [messages, setMessages] = useState(null);
     const [showMediaViewer, setShowMediaViewer] = useState(false);
     const [showNewGroupModal, setShowNewGroupModal] = useState(false);
-    const [showGroupManager, setShowGroupManager] = useState(false)
+    const [showGroupManager, setShowGroupManager] = useState(false);
+
+    const [sidebarToggle, setSidebarToggle] = useState(false);
 
     //handling incoming messages
     const msgHandler = (data) => {
+        console.log("Incoming: ", data)
         try {
             data = JSON.parse(data)
         } catch (error) {
@@ -71,28 +75,32 @@ function App() {
                 delete data["senderName"]
                 data.message = JSON.stringify(data.message)
                 console.log("Message:", data)
+                socket.emit("setLastRead", {
+                    chatID: data.chatID,
+                    messageID: data.messageID
+                });
                 setMessages([data, ...messages])
             }
         }
 
-        let arrayIndex = chatList.findIndex(chat => chat.chatid === data.chatID);
-        if (arrayIndex === -1) return;
+        setChatList(prevChats => {
+            const updatedChats = prevChats.map(chat =>
+                chat.chatid === data.chatID
+                    ? { ...chat, hasUnreadMessages: true, lastInteraction: new Date().toISOString() }
+                    : chat
+            );
 
-        chatList[arrayIndex].lastInteraction = new Date().toISOString();
-
-        if (selectedChat.chatid != data.chatID) {
-            chatList[arrayIndex]["hasUnreadMessages"] = true;
-        }
-
-        setChatList(chatList.sort((a, b) => new Date(b.lastInteraction) - new Date(a.lastInteraction)))
+            return [...updatedChats].sort((a, b) => new Date(b.lastInteraction) - new Date(a.lastInteraction));
+        });
     }
 
     const updateChatList = () => {
         getChats().then((response) => {
             if (response.success) {
                 setChatList(response.data);
-                console.log(response.data);
+                console.log(response)
             } else {
+                console.error(response)
                 //show error message or do whatever
             }
         })
@@ -154,6 +162,7 @@ function App() {
         console.log(chat)
         setSelectedChat(chat);
         setMessage("");
+        updateChatList();
         getMessages(chat.chatid).then((result) => {
             console.log(result)
             setMessages(result)
@@ -188,9 +197,17 @@ function App() {
     console.log(messages)
 
     return <>
-        <Sidebar>
+        <button onClick={() => { sidebarToggle ? setSidebarToggle(false) : setSidebarToggle(true); }} className="block fixed top-0 left-0 w-16 h-16 z-49 bg-white dark:bg-black/40 backdrop-blur-lg dark:text-white lg:hidden">
+            {/* open sidebar, only show in mobile view */}
+            <CgMenu className="w-full h-full p-3"/>
+        </button>
+        <Sidebar hide={sidebarToggle}>
             <SidebarGroup>
-                <h1>Pigon</h1>
+                <h1 className="text-3xl">Pigon</h1>
+                <button onClick={() => { setSidebarToggle(true) }} className="block absolute top-0 right-0 w-10 h-10 z-49 bg-transparent dark:text-white lg:hidden">
+                    {/* close sidebar, only show in mobile view */}
+                    <CgClose className="w-full h-full p-1" />
+                </button>
                 <Spacer />
                 <SidebarGroup className="horizontal">
 
@@ -199,10 +216,9 @@ function App() {
             </SidebarGroup>
             <Spacer />
             <SidebarGroup style={{ flexGrow: 1, gap: "1rem", overflow: "auto" }}>
-                {/* Chat list */}
-                <h1>Chats</h1>
+                <h1 className="text-3xl">Chats</h1>
                 <input style={{ width: "auto" }} type="text" placeholder="Search chats" />
-                {chatList ? chatList.map(chat => <Chat groupmode={chat.groupchat} className={`sidebar-user ${selectedChat ? (selectedChat.chatid == chat.chatid ? "focused" : "") : ""}`} onClick={() => { selectChatHandler(chat) }} key={chat.id} chatname={chat.name} pfpid={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
+                {chatList ? chatList.map(chat => <Chat unread={chat.hasUnreadMessages} groupmode={chat.groupchat} className={`sidebar-user ${selectedChat ? (selectedChat.chatid == chat.chatid ? "focused" : "") : ""}`} onClick={() => { selectChatHandler(chat); setSidebarToggle(true) }} key={chat.chatid} chatname={chat.name} pfpid={removeFromArray(chat.participants, userInfo.id)[0]} />) : ""}
             </SidebarGroup>
             <Spacer />
             <SidebarGroup className="sidebar-bottom horizontal">
@@ -236,7 +252,7 @@ function App() {
                                 setShowMediaViewer(true);
                             }
                         }}
-
+                        key={message.messageID}
                         date={message.date}
                         senderId={message.senderid}
                         senderName={message.username}
