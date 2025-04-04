@@ -6,7 +6,7 @@ function BasicModal({title, children, style, onClose = () => {}}) {
         <div className="modal-container">
             <div className="modal" style={style}>
                 <div className="modal-header">
-                    <h1>{title}</h1>
+                    <h1 className="text-3xl">{title}</h1>
                     <CgClose className="modal-close" onClick={onClose} />
                 </div>
                 <div className="modal-content">

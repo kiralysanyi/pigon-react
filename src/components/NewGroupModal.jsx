@@ -62,19 +62,19 @@ function NewGroupModal({ onCancel, onCreate }) {
     }
 
 
-    return <BasicModal style={{ width: "60vw" }} onClose={onCancel} title="New Group">
-        <div className="form groupmodal" style={{ position: "relative", transform: "none", top: "0px", left: "0px", backdropFilter: "none" }}>
+    return <BasicModal onClose={onCancel} title="New Group">
+        <div className="groupmodal" style={{ position: "relative", transform: "none", top: "0px", left: "0px", backdropFilter: "none" }}>
             <h2>Group</h2>
-            <input value={chatName} onChange={(e) => { setChatName(e.target.value) }} type="text" placeholder="Name of the group"></input>
+            <input className="input" value={chatName} onChange={(e) => { setChatName(e.target.value) }} type="text" placeholder="Name of the group"></input>
             <h2>Added participants</h2>
             <div className="participants">
                 {
                     participants.map(result => <User className="sidebar-user" onClick={() => { removeUserHandler(result) }} key={result.id} username={result.username} id={result.id} />)
                 }
             </div>
-            <input type="button" value="Create" onClick={createGroupHandler} />
+            <input className="btn" type="button" value="Create" onClick={createGroupHandler} />
             <h2>Search</h2>
-            <input onChange={handleSearchInputChange} type="text" placeholder="Search users" />
+            <input className="input" onChange={handleSearchInputChange} type="text" placeholder="Search users" />
             <div className="modal-search-results">
                 {
                     searchResults.map(result => result.id != userInfo.id ? <User className="sidebar-user" onClick={() => { addUserHandler(result) }} key={result.id} username={result.username} id={result.id} /> : "")

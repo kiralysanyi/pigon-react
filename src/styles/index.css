@@ -25,6 +25,12 @@ body {
     background-attachment: fixed;
 }
 
+.input {
+    @apply bg-zinc-100 text-zinc-600 dark:bg-zinc-600 dark:text-zinc-100;
+    @apply w-full;
+    @apply p-3;
+}
+
 .btn {
     @apply bg-green-400 dark:bg-green-700;
     @apply rounded-2xl;

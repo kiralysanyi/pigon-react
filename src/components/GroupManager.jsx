@@ -130,8 +130,8 @@ function GroupManager({ chatInfo, onLeave = () => { }, onClose = () => { } }) {
         setShowConfirm(true);
     }
 
-    return <BasicModal style={{ width: "80%", height: "80%" }} title={"Group: " + chatInfo.name} onClose={onClose}>
-        <div className="form groupmodal" style={{ position: "relative", transform: "none", top: "0px", left: "0px", backdropFilter: "none", display: "flex", flexDirection: "column", gap: "1rem" }}>
+    return <BasicModal title={"Group: " + chatInfo.name} onClose={onClose}>
+        <div className="groupmodal" style={{ position: "relative", transform: "none", top: "0px", left: "0px", backdropFilter: "none", display: "flex", flexDirection: "column", gap: "1rem" }}>
             <h2>Participants</h2>
             <div className="participants">
                 {participants ? participants.map((participant) => <User onClick={() => { removeUserHandler(participant) }} key={participant["id"]} id={participant.id} username={participant.username} />) : ""}
@@ -139,7 +139,7 @@ function GroupManager({ chatInfo, onLeave = () => { }, onClose = () => { } }) {
 
             {isAdmin ? <Fragment>
                 <h2>Add participants</h2>
-                <input type="text" onChange={handleSearchInputChange} placeholder="Search users" />
+                <input className="input" type="text" onChange={handleSearchInputChange} placeholder="Search users" />
                 <div className="modal-search-results">
                     {
                         searchResults.map(result => result.id != userInfo.id ? <User className="sidebar-user" onClick={() => { addUserHandler(result) }} key={result.id} username={result.username} id={result.id} /> : "")
@@ -149,8 +149,8 @@ function GroupManager({ chatInfo, onLeave = () => { }, onClose = () => { } }) {
             <Spacer />
             <div>
                 {isAdmin ? <Fragment>
-                    <input type="button" onClick={deleteGroupHandler} value="Delete group" className="btn-danger" />
-                </Fragment> : <input onClick={leaveGroupHandler} type="button" value="Leave group" className="btn-danger" />}
+                    <input type="button" onClick={deleteGroupHandler} value="Delete group" className="btn btn-danger" />
+                </Fragment> : <input onClick={leaveGroupHandler} type="button" value="Leave group" className="btn btn-danger" />}
             </div>
         </div>
 
